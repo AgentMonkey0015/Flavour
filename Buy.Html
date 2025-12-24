@@ -189,7 +189,7 @@
         </div>
       </div>
 
-      <!-- Fresh Juice -->
+      
       <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="drinks">
         <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400" alt="Fresh Juice" class="w-full h-48 object-cover">
         <div class="p-5">
@@ -204,7 +204,7 @@
         </div>
       </div>
 
-      <!-- Spring Rolls -->
+      
       <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="snacks">
         <img src="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=400" alt="Spring Rolls" class="w-full h-48 object-cover">
         <div class="p-5">
@@ -219,7 +219,7 @@
         </div>
       </div>
 
-      <!-- Grilled Chicken -->
+     
       <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="healthy">
         <img src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400" alt="Grilled Chicken" class="w-full h-48 object-cover">
         <div class="p-5">
@@ -234,7 +234,7 @@
         </div>
       </div>
 
-      <!-- Smoothie Bowl -->
+      
       <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="healthy">
         <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=400" alt="Smoothie Bowl" class="w-full h-48 object-cover">
         <div class="p-5">
@@ -249,7 +249,7 @@
         </div>
       </div>
 
-      <!-- Iced Coffee -->
+      
       <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="drinks">
         <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=400" alt="Iced Coffee" class="w-full h-48 object-cover">
         <div class="p-5">
@@ -264,7 +264,7 @@
         </div>
       </div>
 
-      <!-- Combo Deal -->
+     
       <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="deals">
         <div class="bg-[var(--strawberry-red)] text-white text-xs font-bold px-3 py-1 absolute m-3 rounded-full">
           SAVE ₦500
@@ -288,10 +288,11 @@
     </div>
   </main>
 
-  <!-- Floating Cart Button -->
+ 
   <a href="cart.html" id="cartButton"
      class="cart-button fixed bottom-6 right-6 bg-[var(--strawberry-red)] text-white px-6 py-3 rounded-full font-bold text-lg transition-transform hover:scale-105 active:scale-95 z-50">
-    🛒 Cart (0)
+    <img src="images/Cart.svg" alt="Cart" class="w-6 h-6 inline-block mr-2 align-middle">
+    <span id="cartCount">Cart (0)</span>
   </a>
 
   <script>
@@ -308,7 +309,6 @@
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartButton();
       
-      // Visual feedback
       const btn = event.target;
       const originalText = btn.textContent;
       btn.textContent = 'Added!';
@@ -321,20 +321,19 @@
     }
 
     function updateCartButton() {
-      const cartBtn = document.getElementById('cartButton');
+      const cartCount = document.getElementById('cartCount');
       const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-      cartBtn.textContent = `🛒 Cart (${totalItems})`;
+      cartCount.textContent = `Cart (${totalItems})`;
     }
     
-    // Initialize cart count on page load
     updateCartButton();
 
-    // Category filtering
+   
     document.querySelectorAll('.category-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const cat = btn.dataset.category;
         
-        // Update active button
+       
         document.querySelectorAll('.category-btn').forEach(b => {
           b.classList.remove('active');
           b.style.backgroundColor = 'white';
@@ -342,7 +341,7 @@
         });
         btn.classList.add('active');
         
-        // Filter cards
+    
         document.querySelectorAll('.food-card').forEach(card => {
           if (cat === 'all') {
             card.style.display = 'block';
@@ -353,7 +352,7 @@
       });
     });
 
-    // Navbar scroll effect
+    
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 10) {

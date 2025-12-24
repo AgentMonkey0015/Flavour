@@ -25,7 +25,7 @@
       justify-content: center;
     }
 
-    /* ===== Login Form (Uiverse, adapted) ===== */
+    
     .form {
       --input-focus: #2d8cf0;
       --font-color: #323232;
@@ -154,6 +154,8 @@
       </div>
     </div>
 
+    <p id="authError" style="display:none; color:#c0392b; font-size:14px; font-weight:600;"></p>
+
     <button class="button-confirm">Let’s go →</button>
     <div style="text-align: center; margin-top: 16px; font-size: 14px; color: var(--font-color-sub);">
       Don't have an account? <a href="register.html" style="color: var(--jungle-green); font-weight: 600; text-decoration: none;">Register</a>
@@ -186,19 +188,38 @@
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = form.email.value;
-    const password = form.password.value;
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
+    const errorEl = document.getElementById("authError");
+
+    errorEl.style.display = "none";
+    errorEl.textContent = "";
+
+    if (!email || !password) {
+      errorEl.textContent = "Please enter both email and password.";
+      errorEl.style.display = "block";
+      return;
+    }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
       window.location.href = "buy.html";
     } catch (err) {
-      if (err.code === "auth/user-not-found") {
-        await createUserWithEmailAndPassword(auth, email, password);
-        window.location.href = "buy.html";
-      } else {
-        alert(err.message);
+      switch (err.code) {
+        case "auth/user-not-found":
+          errorEl.textContent = "No account found with this email.";
+          break;
+        case "auth/wrong-password":
+        case "auth/invalid-credential":
+          errorEl.textContent = "Incorrect email or password.";
+          break;
+        case "auth/invalid-email":
+          errorEl.textContent = "Please enter a valid email address.";
+          break;
+        default:
+          errorEl.textContent = "Login failed. Please try again.";
       }
+      errorEl.style.display = "block";
     }
   });
 </script>

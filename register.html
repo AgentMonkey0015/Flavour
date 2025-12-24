@@ -79,6 +79,8 @@
         >
       </div>
 
+      <p id="registerError" class="hidden text-sm font-semibold mt-1" style="color: var(--strawberry-red);"></p>
+
       <button 
         type="submit" 
         class="text-white font-extrabold p-4 rounded-xl mt-4 hover:opacity-90 transition-opacity"
@@ -115,25 +117,48 @@
     const form = document.getElementById("registerForm");
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        const repeatPassword = document.getElementById("repeatPassword").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const repeatPassword = document.getElementById("repeatPassword").value.trim();
+      const errorEl = document.getElementById("registerError");
 
-        if(password !== repeatPassword) {
-            alert("Passwords do not match!");
-            return;
+      errorEl.classList.add("hidden");
+      errorEl.textContent = "";
+
+      if (!email || !password || !repeatPassword) {
+        errorEl.textContent = "Please fill in all fields.";
+        errorEl.classList.remove("hidden");
+        return;
+      }
+
+      if (password !== repeatPassword) {
+        errorEl.textContent = "Passwords do not match.";
+        errorEl.classList.remove("hidden");
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(userCredential.user);
+        window.location.href = "login.html";
+      } catch (err) {
+        switch (err.code) {
+          case "auth/email-already-in-use":
+            errorEl.textContent = "An account with this email already exists.";
+            break;
+          case "auth/invalid-email":
+            errorEl.textContent = "Please enter a valid email address.";
+            break;
+          case "auth/weak-password":
+            errorEl.textContent = "Password should be at least 6 characters.";
+            break;
+          default:
+            errorEl.textContent = "Registration failed. Please try again.";
         }
-
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            await sendEmailVerification(userCredential.user);
-            alert("Registration successful! Please check your email to verify your account.");
-            window.location.href = "login.html";
-        } catch(err) {
-            alert(err.message);
-        }
+        errorEl.classList.remove("hidden");
+      }
     });
   </script>
 

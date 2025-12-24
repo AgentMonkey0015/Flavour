@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cart – Flavour</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/waveform.js"></script>
   <style>
     :root {
       --jungle-green: #44af69;
@@ -81,6 +82,7 @@
             Apply Coupon
           </button>
         </form>
+        <p id="couponError" class="text-sm font-semibold mt-2 hidden" style="color: var(--strawberry-red);"></p>
         <div id="appliedCoupons" class="mt-4 space-y-2">
           
         </div>
@@ -126,6 +128,20 @@
     </div>
   </div>
 
+  <div id="loaderOverlay" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <l-waveform size="45" stroke="4" speed="1" color="#ffffff"></l-waveform>
+  </div>
+  <div id="successOverlay" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-xl">
+      <h2 class="text-2xl font-bold mb-2" style="color: var(--jungle-green);">Order Successful 🎉</h2>
+      <p class="text-gray-600 mb-4">Your order has been placed successfully.</p>
+      <p class="text-lg font-bold mb-6" style="color: var(--orange);" id="successTotal"></p>
+      <button id="successClose"
+        class="w-full bg-[var(--jungle-green)] text-white py-3 rounded-xl font-semibold hover:opacity-90">
+        Continue Shopping
+      </button>
+    </div>
+  </div>
   <script>
     
     const productsDB = [
@@ -296,6 +312,47 @@
     let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     let appliedGeneralCoupon = null;
     let appliedItemCoupons = {};
+
+    // Loader and error helpers
+    let loader;
+    const couponError = document.getElementById('couponError');
+
+    // Success overlay helpers
+    const successOverlay = document.getElementById('successOverlay');
+    const successTotal = document.getElementById('successTotal');
+    const successClose = document.getElementById('successClose');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loader = document.getElementById('loaderOverlay');
+    });
+
+    function showLoader() {
+      if (!loader) return;
+      loader.classList.remove('hidden');
+      loader.classList.add('flex');
+    }
+
+    function hideLoader() {
+      if (!loader) return;
+      loader.classList.add('hidden');
+      loader.classList.remove('flex');
+    }
+
+    function showCouponError(message) {
+      couponError.textContent = message;
+      couponError.classList.remove('hidden');
+    }
+
+    function showSuccess(totalText) {
+      successTotal.textContent = `Total Paid: ${totalText}`;
+      successOverlay.classList.remove('hidden');
+      successOverlay.classList.add('flex');
+    }
+
+    function hideSuccess() {
+      successOverlay.classList.add('hidden');
+      successOverlay.classList.remove('flex');
+    }
 
     function findProduct(name) {
       return productsDB.find(p => p.name.toLowerCase() === name.toLowerCase());
@@ -517,44 +574,65 @@
 
     document.getElementById('couponForm').addEventListener('submit', (e) => {
       e.preventDefault();
+      couponError.classList.add('hidden');
+
+      if (cartItems.length === 0) {
+        showCouponError('Your cart is empty. Add items before applying a coupon.');
+        return;
+      }
+
       const code = document.getElementById('couponInput').value.trim().toUpperCase();
-      
-      // Check if it's a general coupon
+
+      if (!code) {
+        showCouponError('Please enter a coupon code.');
+        return;
+      }
+
       if (generalCoupons[code]) {
         appliedGeneralCoupon = code;
-        alert(`General coupon "${code}" applied! ${generalCoupons[code]}% off your order.`);
         document.getElementById('couponInput').value = '';
         renderCart();
         renderAppliedCoupons();
         return;
       }
 
-     
+      if (code === 'EXPIRED10' || code === 'OLDPROMO') {
+        showCouponError('This coupon has expired.');
+        return;
+      }
+
       const product = productsDB.find(p => p.couponCode === code);
       if (product) {
         const cartItem = cartItems.find(item => item.name === product.name);
-        if (cartItem) {
-          appliedItemCoupons[product.itemId] = code;
-          alert(`Item coupon "${code}" applied to ${product.name}!`);
-          document.getElementById('couponInput').value = '';
-          renderCart();
-          renderAppliedCoupons();
-        } else {
-          alert(`Add ${product.name} to cart to use this coupon!`);
+        if (!cartItem) {
+          showCouponError(`Add ${product.name} to cart to use this coupon.`);
+          return;
         }
+        appliedItemCoupons[product.itemId] = code;
+        document.getElementById('couponInput').value = '';
+        renderCart();
+        renderAppliedCoupons();
         return;
       }
 
-      alert('Invalid coupon code!');
+      showCouponError('Invalid coupon code.');
     });
 
-    document.getElementById('checkoutBtn').addEventListener('click', () => {
+    document.getElementById('checkoutBtn').addEventListener('click', async () => {
       if (cartItems.length === 0) {
-        alert('Your cart is empty!');
+        showCouponError('Your cart is empty.');
         return;
       }
-      const total = document.getElementById('total').textContent;
-      alert(`Checkout successful! Total: ${total}\n\nThank you for ordering from Flavour!`);
+
+      showLoader();
+
+      await new Promise(res => setTimeout(res, 2000)); // simulate transaction
+
+      hideLoader();
+
+      const totalText = document.getElementById('total').textContent;
+      showSuccess(totalText);
+
       cartItems = [];
       appliedGeneralCoupon = null;
       appliedItemCoupons = {};
@@ -570,7 +648,12 @@
    
     renderCart();
     renderAppliedCoupons();
-  </script>
 
+    // Success overlay close handler
+    successClose.addEventListener('click', () => {
+      hideSuccess();
+      window.location.href = 'Buy.Html';
+    });
+  </script>
 </body>
 </html>
