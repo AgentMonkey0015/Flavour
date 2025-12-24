@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu – Flavour</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --jungle-green: #44af69;
+      --strawberry-red: #f8333c;
+      --orange: #fcab10;
+      --pacific-blue: #2b9eb3;
+      --sand-dune: #dbd5b5;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      overscroll-behavior: none;
+    }
+    body {
+      overflow-x: hidden;
+      background-color: var(--sand-dune);
+    }
+    .suggestion {
+      background-color: var(--sand-dune);
+      border: 2px dashed var(--pacific-blue);
+    }
+    button {
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+    button:hover {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .nav-scrolled {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .nav-btn:hover {
+      box-shadow: none;
+    }
+
+    .category-container {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .category-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .food-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .food-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .category-btn {
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .category-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .category-btn.active {
+      background-color: var(--pacific-blue) !important;
+      color: white !important;
+    }
+
+    .cart-button {
+      box-shadow: 0 4px 12px rgba(248, 51, 60, 0.4);
+    }
+  </style>
+</head>
+
+<body class="bg-[var(--sand-dune)] text-gray-900">
+
+  
+  <nav id="navbar" class="bg-[var(--jungle-green)] text-white px-6 py-4 flex items-center transition-shadow w-full">
+    <div class="flex items-center gap-3">
+      <img src="images/Flavour. Logo.png" alt="Flavour logo" class="h-14 w-auto max-h-14 object-contain" />
+    </div>
+
+    <h1 class="absolute left-1/2 -translate-x-1/2 text-2xl font-bold">
+      Flavour.
+    </h1>
+
+    <div class="flex gap-6 items-center ml-auto">
+      <button class="nav-btn hover:text-[var(--orange)]">Home</button>
+      <button class="nav-btn hover:text-[var(--orange)]">Orders</button>
+      <button class="bg-white text-[var(--jungle-green)] px-4 py-2 rounded-lg font-semibold">
+        Login
+      </button>
+    </div>
+  </nav>
+
+  <section class="px-6 py-12 text-center">
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-3">
+      Our <span style="color: var(--jungle-green);">Menu</span>
+    </h2>
+    <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+      Explore our delicious selection of meals, drinks, and snacks
+    </p>
+  </section>
+
+  <section class="px-0 mb-8 w-full overflow-x-auto category-container">
+    <div class="pl-6 flex gap-3 pb-2">
+      <button data-category="all" class="category-btn active bg-[var(--pacific-blue)] text-white px-6 py-2 rounded-full font-semibold">All</button>
+      <button data-category="fast" class="category-btn bg-white text-gray-800 px-6 py-2 rounded-full font-semibold border-2 border-gray-200">Fast Food</button>
+      <button data-category="healthy" class="category-btn bg-white text-gray-800 px-6 py-2 rounded-full font-semibold border-2 border-gray-200">Healthy</button>
+      <button data-category="drinks" class="category-btn bg-white text-gray-800 px-6 py-2 rounded-full font-semibold border-2 border-gray-200">Drinks</button>
+      <button data-category="snacks" class="category-btn bg-white text-gray-800 px-6 py-2 rounded-full font-semibold border-2 border-gray-200">Snacks</button>
+      <button data-category="deals" class="category-btn bg-white text-gray-800 px-6 py-2 rounded-full font-semibold border-2 border-gray-200">Deals</button>
+    </div>
+  </section>
+
+  
+  <main class="px-6 pb-24 w-full">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+     
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="fast">
+        <img src="images/Cheese Burger.jpg" alt="Cheese Burger" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Cheese Burger</h3>
+          <p class="text-sm text-gray-600 mb-4">Juicy beef patty with melted cheese</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦3,500</span>
+            <button onclick="addToCart('Cheese Burger', 3500)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="fast">
+        <img src="images/Shawarma.jpg" alt="Shawarma" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Shawarma</h3>
+          <p class="text-sm text-gray-600 mb-4">Fresh veggies & spicy sauce</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦3,000</span>
+            <button onclick="addToCart('Shawarma', 3000)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card suggestion" data-category="fast">
+        <div class="bg-[var(--pacific-blue)] text-white text-xs font-bold px-3 py-1 absolute m-3 rounded-full">
+          RECOMMENDED
+        </div>
+        <img src="images/Peperoni Pizza.jpg" alt="Pepperoni Pizza" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Pepperoni Pizza</h3>
+          <p class="text-sm text-gray-600 mb-4">Smoked pepperoni, stretchy cheese</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦2,500</span>
+            <button onclick="addToCart('Pepperoni Pizza', 2500)" class="bg-[var(--pacific-blue)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+    
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="healthy">
+        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400" alt="Caesar Salad" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Caesar Salad</h3>
+          <p class="text-sm text-gray-600 mb-4">Crisp lettuce, parmesan, croutons</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦2,800</span>
+            <button onclick="addToCart('Caesar Salad', 2800)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fresh Juice -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="drinks">
+        <img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400" alt="Fresh Juice" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Fresh Orange Juice</h3>
+          <p class="text-sm text-gray-600 mb-4">100% natural, no sugar added</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦1,500</span>
+            <button onclick="addToCart('Fresh Orange Juice', 1500)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spring Rolls -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="snacks">
+        <img src="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=400" alt="Spring Rolls" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Spring Rolls</h3>
+          <p class="text-sm text-gray-600 mb-4">Crispy golden rolls with dipping sauce</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦1,800</span>
+            <button onclick="addToCart('Spring Rolls', 1800)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grilled Chicken -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="healthy">
+        <img src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400" alt="Grilled Chicken" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Grilled Chicken</h3>
+          <p class="text-sm text-gray-600 mb-4">Herb-seasoned with veggies</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦4,200</span>
+            <button onclick="addToCart('Grilled Chicken', 4200)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smoothie Bowl -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="healthy">
+        <img src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=400" alt="Smoothie Bowl" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Smoothie Bowl</h3>
+          <p class="text-sm text-gray-600 mb-4">Acai, berries, and granola</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦3,200</span>
+            <button onclick="addToCart('Smoothie Bowl', 3200)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Iced Coffee -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="drinks">
+        <img src="https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=400" alt="Iced Coffee" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Iced Coffee</h3>
+          <p class="text-sm text-gray-600 mb-4">Cold brew with ice and cream</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-extrabold" style="color: var(--orange);">₦1,800</span>
+            <button onclick="addToCart('Iced Coffee', 1800)" class="bg-[var(--jungle-green)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Combo Deal -->
+      <div class="bg-white rounded-xl shadow-md overflow-hidden food-card" data-category="deals">
+        <div class="bg-[var(--strawberry-red)] text-white text-xs font-bold px-3 py-1 absolute m-3 rounded-full">
+          SAVE ₦500
+        </div>
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400" alt="Meal Deal" class="w-full h-48 object-cover">
+        <div class="p-5">
+          <h3 class="text-xl font-bold mb-1">Pizza + Drink Combo</h3>
+          <p class="text-sm text-gray-600 mb-4">Large pizza + 2 drinks</p>
+          <div class="flex justify-between items-center">
+            <div>
+              <span class="text-lg line-through text-gray-400">₦4,500</span>
+              <span class="text-2xl font-extrabold ml-2" style="color: var(--strawberry-red);">₦4,000</span>
+            </div>
+            <button onclick="addToCart('Pizza Combo', 4000)" class="bg-[var(--strawberry-red)] text-white px-5 py-2 rounded-lg font-semibold">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Floating Cart Button -->
+  <a href="cart.html" id="cartButton"
+     class="cart-button fixed bottom-6 right-6 bg-[var(--strawberry-red)] text-white px-6 py-3 rounded-full font-bold text-lg transition-transform hover:scale-105 active:scale-95 z-50">
+    🛒 Cart (0)
+  </a>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function addToCart(item, price) {
+      const existing = cart.find(cartItem => cartItem.name === item);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({name: item, price: price, qty: 1});
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartButton();
+      
+      // Visual feedback
+      const btn = event.target;
+      const originalText = btn.textContent;
+      btn.textContent = 'Added!';
+      btn.style.backgroundColor = 'var(--pacific-blue)';
+      
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.style.backgroundColor = '';
+      }, 1000);
+    }
+
+    function updateCartButton() {
+      const cartBtn = document.getElementById('cartButton');
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      cartBtn.textContent = `🛒 Cart (${totalItems})`;
+    }
+    
+    // Initialize cart count on page load
+    updateCartButton();
+
+    // Category filtering
+    document.querySelectorAll('.category-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.category;
+        
+        // Update active button
+        document.querySelectorAll('.category-btn').forEach(b => {
+          b.classList.remove('active');
+          b.style.backgroundColor = 'white';
+          b.style.color = '#1f2937';
+        });
+        btn.classList.add('active');
+        
+        // Filter cards
+        document.querySelectorAll('.food-card').forEach(card => {
+          if (cat === 'all') {
+            card.style.display = 'block';
+          } else {
+            card.style.display = card.dataset.category === cat ? 'block' : 'none';
+          }
+        });
+      });
+    });
+
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    });
+  </script>
+
+</body>
+</html>

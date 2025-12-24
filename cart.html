@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart – Flavour</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --jungle-green: #44af69;
+      --strawberry-red: #f8333c;
+      --orange: #fcab10;
+      --pacific-blue: #2b9eb3;
+      --sand-dune: #dbd5b5;
+    }
+    body {
+      background-color: var(--sand-dune);
+    }
+    .cart-card {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+    .cart-card:hover {
+      transform: translateY(-2px);
+    }
+    button {
+      transition: all 0.2s ease;
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+  <nav class="bg-[var(--jungle-green)] text-white px-6 py-4 rounded-2xl mb-8 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-bold">Flavour.</h1>
+    </div>
+    <a href="Buy.Html" class="bg-white text-[var(--jungle-green)] px-4 py-2 rounded-lg font-semibold hover:opacity-90">
+      Back to Menu
+    </a>
+  </nav>
+
+  <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-2xl p-6 cart-card">
+        <h2 class="text-2xl font-bold mb-6" style="color: var(--jungle-green);">Your Cart</h2>
+        <div id="cartItems" class="space-y-4">
+
+        </div>
+        <div id="emptyCart" class="text-center py-12 hidden">
+          <p class="text-gray-500 text-lg mb-4">Your cart is empty</p>
+          <a href="menu.html" class="inline-block bg-[var(--jungle-green)] text-white px-6 py-3 rounded-lg font-semibold">
+            Browse Menu
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="space-y-6">
+      
+  
+      <div class="bg-white rounded-2xl p-6 cart-card">
+        <h3 class="text-xl font-bold mb-4" style="color: var(--orange);">Apply Coupon</h3>
+        <form id="couponForm" class="space-y-3">
+          <input 
+            type="text" 
+            id="couponInput" 
+            placeholder="Enter coupon code" 
+            class="w-full px-4 py-3 border-2 rounded-lg focus:outline-none"
+            style="border-color: var(--jungle-green);"
+          >
+          <button 
+            type="submit" 
+            class="w-full bg-[var(--pacific-blue)] text-white py-3 rounded-lg font-semibold"
+          >
+            Apply Coupon
+          </button>
+        </form>
+        <div id="appliedCoupons" class="mt-4 space-y-2">
+        
+        </div>
+      </div>
+
+
+      <div class="bg-white rounded-2xl p-6 cart-card">
+        <h3 class="text-xl font-bold mb-4" style="color: var(--jungle-green);">Order Summary</h3>
+        <div class="space-y-3 text-gray-700">
+          <div class="flex justify-between">
+            <span>Subtotal:</span>
+            <span id="subtotal" class="font-semibold">₦0.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>VAT (5%):</span>
+            <span id="vat" class="font-semibold">₦0.00</span>
+          </div>
+          <div class="flex justify-between text-red-600">
+            <span>Item Discounts:</span>
+            <span id="itemDiscounts" class="font-semibold">-₦0.00</span>
+          </div>
+          <div class="flex justify-between text-red-600">
+            <span>Coupon Discounts:</span>
+            <span id="couponDiscounts" class="font-semibold">-₦0.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Delivery Fee:</span>
+            <span id="deliveryFee" class="font-semibold">₦500.00</span>
+          </div>
+          <hr class="my-3">
+          <div class="flex justify-between text-xl font-bold" style="color: var(--orange);">
+            <span>Total:</span>
+            <span id="total">₦0.00</span>
+          </div>
+        </div>
+        <button 
+          id="checkoutBtn"
+          class="w-full mt-6 bg-[var(--strawberry-red)] text-white py-4 rounded-xl font-bold text-lg hover:opacity-90"
+        >
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+   
+    const productsDB = [
+      {
+        "itemId": "001",
+        "name": "Cheese Burger",
+        "category": "Burger",
+        "price": 3500,
+        "availableQty": 100,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "BURGER5",
+        "couponDiscount": 5,
+        "notes": "Extra Spicy"
+      },
+      {
+        "itemId": "002",
+        "name": "Shawarma",
+        "category": "Side",
+        "price": 3000,
+        "availableQty": 200,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "FRIES10",
+        "couponDiscount": 10,
+        "notes": "Fresh veggies & spicy sauce"
+      },
+      {
+        "itemId": "003",
+        "name": "Soda",
+        "category": "Drink",
+        "price": 350,
+        "availableQty": 300,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "SODA5",
+        "couponDiscount": 5
+      },
+      {
+        "itemId": "004",
+        "name": "Orange Juice",
+        "category": "Drink",
+        "price": 1500,
+        "availableQty": 200,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "OJSIMPSON",
+        "couponDiscount": 5,
+        "notes": "FRESHLY SQUEEZED"
+      },
+      {
+        "itemId": "005",
+        "name": "Chocolate Cake",
+        "category": "Dessert",
+        "price": 1200,
+        "availableQty": 50,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "CAKE10",
+        "couponDiscount": 10
+      },
+      
+      {
+        "itemId": "006",
+        "name": "Pepperoni Pizza",
+        "category": "Pizza",
+        "price": 2500,
+        "availableQty": 50,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "PIZZA10",
+        "couponDiscount": 10,
+        "notes": "Smoked pepperoni, stretchy cheese"
+      },
+      {
+        "itemId": "007",
+        "name": "Caesar Salad",
+        "category": "Healthy",
+        "price": 2800,
+        "availableQty": 40,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "SALAD15",
+        "couponDiscount": 15
+      }
+    ];
+
+    
+    const generalCoupons = {
+      "SAVE10": 10,
+      "WELCOME20": 20,
+      "FIRSTORDER": 15
+    };
+
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    let appliedGeneralCoupon = null;
+    let appliedItemCoupons = {};
+
+    function findProduct(name) {
+      return productsDB.find(p => p.name.toLowerCase() === name.toLowerCase());
+    }
+
+    function formatPrice(price) {
+      return `₦${price.toLocaleString('en-NG', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      const emptyCart = document.getElementById('emptyCart');
+      
+      if (cartItems.length === 0) {
+        container.classList.add('hidden');
+        emptyCart.classList.remove('hidden');
+        updateTotals();
+        return;
+      }
+
+      container.classList.remove('hidden');
+      emptyCart.classList.add('hidden');
+      container.innerHTML = '';
+
+      cartItems.forEach((item, index) => {
+        const product = findProduct(item.name);
+        if (!product) return;
+
+        const basePrice = product.price * item.qty;
+        const vatAmount = (basePrice * product.vat) / 100;
+        const itemDiscount = (basePrice * product.discount) / 100;
+        
+        
+        const hasCoupon = appliedItemCoupons[product.itemId];
+        const couponDiscount = hasCoupon ? (basePrice * product.couponDiscount) / 100 : 0;
+        
+        const finalPrice = basePrice + vatAmount - itemDiscount - couponDiscount;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'border-2 rounded-xl p-4';
+        itemDiv.style.borderColor = 'var(--sand-dune)';
+        itemDiv.innerHTML = `
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex-1">
+              <h4 class="font-bold text-lg">${product.name}</h4>
+              <p class="text-sm text-gray-600">${product.category}</p>
+              ${product.notes ? `<p class="text-xs text-gray-500 italic">${product.notes}</p>` : ''}
+            </div>
+            <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-700 text-xl font-bold">×</button>
+          </div>
+          
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between text-gray-600">
+              <span>Base Price (×${item.qty}):</span>
+              <span>${formatPrice(basePrice)}</span>
+            </div>
+            <div class="flex justify-between text-gray-600">
+              <span>VAT (${product.vat}%):</span>
+              <span>${formatPrice(vatAmount)}</span>
+            </div>
+            ${itemDiscount > 0 ? `
+              <div class="flex justify-between text-red-600">
+                <span>Discount (${product.discount}%):</span>
+                <span>-${formatPrice(itemDiscount)}</span>
+              </div>
+            ` : ''}
+            ${hasCoupon ? `
+              <div class="flex justify-between text-green-600 font-semibold">
+                <span>Coupon (${product.couponCode}):</span>
+                <span>-${formatPrice(couponDiscount)}</span>
+              </div>
+            ` : ''}
+            <hr class="my-2">
+            <div class="flex justify-between items-center font-bold text-lg" style="color: var(--orange);">
+              <span>Item Total:</span>
+              <span>${formatPrice(finalPrice)}</span>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between mt-4">
+            <div class="flex items-center gap-3 bg-gray-100 rounded-lg px-3 py-2">
+              <button onclick="decreaseQty(${index})" class="text-xl font-bold" style="color: var(--strawberry-red);">−</button>
+              <span class="font-semibold min-w-[2rem] text-center">${item.qty}</span>
+              <button onclick="increaseQty(${index})" class="text-xl font-bold" style="color: var(--jungle-green);">+</button>
+            </div>
+            ${!hasCoupon && product.couponCode ? `
+              <button onclick="applyItemCoupon('${product.itemId}', '${product.couponCode}')" 
+                      class="text-sm px-3 py-1 rounded-lg border-2 font-semibold hover:opacity-80"
+                      style="border-color: var(--pacific-blue); color: var(--pacific-blue);">
+                Apply ${product.couponCode}
+              </button>
+            ` : ''}
+          </div>
+        `;
+        container.appendChild(itemDiv);
+      });
+
+      updateTotals();
+      saveCart();
+    }
+
+    function updateTotals() {
+      let subtotal = 0;
+      let totalVAT = 0;
+      let totalItemDiscounts = 0;
+      let totalCouponDiscounts = 0;
+
+      cartItems.forEach(item => {
+        const product = findProduct(item.name);
+        if (!product) return;
+
+        const basePrice = product.price * item.qty;
+        const vatAmount = (basePrice * product.vat) / 100;
+        const itemDiscount = (basePrice * product.discount) / 100;
+        
+        const hasCoupon = appliedItemCoupons[product.itemId];
+        const couponDiscount = hasCoupon ? (basePrice * product.couponDiscount) / 100 : 0;
+
+        subtotal += basePrice;
+        totalVAT += vatAmount;
+        totalItemDiscounts += itemDiscount;
+        totalCouponDiscounts += couponDiscount;
+      });
+
+      const deliveryFee = cartItems.length > 0 ? 500 : 0;
+      
+  
+      const generalCouponDiscount = appliedGeneralCoupon 
+        ? (subtotal * generalCoupons[appliedGeneralCoupon]) / 100 
+        : 0;
+      
+      totalCouponDiscounts += generalCouponDiscount;
+
+      const total = subtotal + totalVAT - totalItemDiscounts - totalCouponDiscounts + deliveryFee;
+
+      document.getElementById('subtotal').textContent = formatPrice(subtotal);
+      document.getElementById('vat').textContent = formatPrice(totalVAT);
+      document.getElementById('itemDiscounts').textContent = formatPrice(totalItemDiscounts);
+      document.getElementById('couponDiscounts').textContent = formatPrice(totalCouponDiscounts);
+      document.getElementById('deliveryFee').textContent = formatPrice(deliveryFee);
+      document.getElementById('total').textContent = formatPrice(total);
+    }
+
+    function increaseQty(index) {
+      cartItems[index].qty++;
+      renderCart();
+    }
+
+    function decreaseQty(index) {
+      if (cartItems[index].qty > 1) {
+        cartItems[index].qty--;
+        renderCart();
+      }
+    }
+
+    function removeItem(index) {
+      const item = cartItems[index];
+      const product = findProduct(item.name);
+      if (product && appliedItemCoupons[product.itemId]) {
+        delete appliedItemCoupons[product.itemId];
+      }
+      cartItems.splice(index, 1);
+      renderCart();
+      renderAppliedCoupons();
+    }
+
+    function applyItemCoupon(itemId, couponCode) {
+      appliedItemCoupons[itemId] = couponCode;
+      renderCart();
+      renderAppliedCoupons();
+    }
+
+    function renderAppliedCoupons() {
+      const container = document.getElementById('appliedCoupons');
+      container.innerHTML = '';
+
+      
+      if (appliedGeneralCoupon) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center justify-between bg-green-50 border-2 border-green-300 rounded-lg px-3 py-2';
+        div.innerHTML = `
+          <div>
+            <span class="font-semibold text-green-700">${appliedGeneralCoupon}</span>
+            <span class="text-xs text-green-600 ml-2">(${generalCoupons[appliedGeneralCoupon]}% off)</span>
+          </div>
+          <button onclick="removeGeneralCoupon()" class="text-red-500 font-bold">×</button>
+        `;
+        container.appendChild(div);
+      }
+
+      
+      Object.entries(appliedItemCoupons).forEach(([itemId, couponCode]) => {
+        const product = productsDB.find(p => p.itemId === itemId);
+        if (product) {
+          const div = document.createElement('div');
+          div.className = 'flex items-center justify-between bg-blue-50 border-2 border-blue-300 rounded-lg px-3 py-2';
+          div.innerHTML = `
+            <div class="text-sm">
+              <span class="font-semibold text-blue-700">${couponCode}</span>
+              <span class="text-xs text-blue-600 block">${product.name}</span>
+            </div>
+            <button onclick="removeItemCoupon('${itemId}')" class="text-red-500 font-bold">×</button>
+          `;
+          container.appendChild(div);
+        }
+      });
+    }
+
+    function removeGeneralCoupon() {
+      appliedGeneralCoupon = null;
+      renderCart();
+      renderAppliedCoupons();
+    }
+
+    function removeItemCoupon(itemId) {
+      delete appliedItemCoupons[itemId];
+      renderCart();
+      renderAppliedCoupons();
+    }
+
+    document.getElementById('couponForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();
+      
+      
+      if (generalCoupons[code]) {
+        appliedGeneralCoupon = code;
+        alert(`General coupon "${code}" applied! ${generalCoupons[code]}% off your order.`);
+        document.getElementById('couponInput').value = '';
+        renderCart();
+        renderAppliedCoupons();
+        return;
+      }
+
+      // Check if it's an item-specific coupon
+      const product = productsDB.find(p => p.couponCode === code);
+      if (product) {
+        const cartItem = cartItems.find(item => item.name === product.name);
+        if (cartItem) {
+          appliedItemCoupons[product.itemId] = code;
+          alert(`Item coupon "${code}" applied to ${product.name}!`);
+          document.getElementById('couponInput').value = '';
+          renderCart();
+          renderAppliedCoupons();
+        } else {
+          alert(`Add ${product.name} to cart to use this coupon!`);
+        }
+        return;
+      }
+
+      alert('Invalid coupon code!');
+    });
+
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      if (cartItems.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+      const total = document.getElementById('total').textContent;
+      alert(`Checkout successful! Total: ${total}\n\nThank you for ordering from Flavour!`);
+      cartItems = [];
+      appliedGeneralCoupon = null;
+      appliedItemCoupons = {};
+      saveCart();
+      renderCart();
+      renderAppliedCoupons();
+    });
+
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    }
+
+  
+    renderCart();
+    renderAppliedCoupons();
+  </script>
+
+</body>
+</html>

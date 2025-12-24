@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – Flavour</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --jungle-green: #44af69;
+      --strawberry-red: #f8333c;
+      --orange: #fcab10;
+      --pacific-blue: #2b9eb3;
+      --sand-dune: #dbd5b5;
+    }
+    body {
+      background-color: var(--sand-dune);
+    }
+    .form-container {
+      background-color: white;
+      border: 3px solid var(--jungle-green);
+      box-shadow: 6px 6px 0 0 var(--orange);
+    }
+    input {
+      transition: all 0.2s ease;
+    }
+    input:focus {
+      transform: translateY(2px);
+      box-shadow: 2px 2px 0 0 var(--pacific-blue);
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+  <div class="form-container rounded-2xl p-10 w-full max-w-md">
+    <!-- Logo/Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-extrabold mb-2" style="color: var(--jungle-green);">Flavour.</h1>
+      <p class="text-gray-600">Create your account</p>
+    </div>
+
+    <form id="registerForm" class="flex flex-col gap-5">
+      <div class="flex flex-col items-start">
+        <label for="email" class="font-semibold mb-2 text-gray-700">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          placeholder="Enter your email" 
+          required 
+          class="w-full border-2 rounded-lg p-3 focus:outline-none"
+          style="border-color: var(--jungle-green); box-shadow: 3px 3px 0 0 var(--pacific-blue);"
+        >
+      </div>
+
+      <div class="flex flex-col items-start">
+        <label for="password" class="font-semibold mb-2 text-gray-700">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          placeholder="Enter your password" 
+          required 
+          class="w-full border-2 rounded-lg p-3 focus:outline-none"
+          style="border-color: var(--jungle-green); box-shadow: 3px 3px 0 0 var(--pacific-blue);"
+        >
+      </div>
+
+      <div class="flex flex-col items-start">
+        <label for="repeatPassword" class="font-semibold mb-2 text-gray-700">Repeat Password</label>
+        <input 
+          type="password" 
+          id="repeatPassword" 
+          placeholder="Repeat your password" 
+          required 
+          class="w-full border-2 rounded-lg p-3 focus:outline-none"
+          style="border-color: var(--jungle-green); box-shadow: 3px 3px 0 0 var(--pacific-blue);"
+        >
+      </div>
+
+      <button 
+        type="submit" 
+        class="text-white font-extrabold p-4 rounded-xl mt-4 hover:opacity-90 transition-opacity"
+        style="background-color: var(--strawberry-red); box-shadow: 4px 4px 0 0 var(--orange);"
+      >
+        SIGN UP
+      </button>
+
+      <p class="text-sm text-gray-600 mt-2 text-center">
+        Already have an account? 
+        <a href="login.html" class="font-semibold hover:underline" style="color: var(--pacific-blue);">
+          Login Here!
+        </a>
+      </p>
+    </form>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCrtHNewzF3FQwMuDDta_TycgFbpgytscM",
+        authDomain: "flavour-app.firebaseapp.com",
+        projectId: "flavour-app",
+        storageBucket: "flavour-app.firebasestorage.app",
+        messagingSenderId: "689550413226",
+        appId: "1:689550413226:web:b1930dc2f35e1e7a656fd3",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById("registerForm");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const repeatPassword = document.getElementById("repeatPassword").value;
+
+        if(password !== repeatPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            await sendEmailVerification(userCredential.user);
+            alert("Registration successful! Please check your email to verify your account.");
+            window.location.href = "login.html";
+        } catch(err) {
+            alert(err.message);
+        }
+    });
+  </script>
+
+</body>
+</html>

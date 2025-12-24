@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flavour</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --jungle-green: #44af69;
+      --strawberry-red: #f8333c;
+      --orange: #fcab10;
+      --pacific-blue: #2b9eb3;
+      --sand-dune: #dbd5b5;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      overscroll-behavior: none;
+    }
+    body {
+      overflow-x: hidden;
+      padding-top: 88px;
+    }
+    .suggestion {
+      background-color: var(--sand-dune);
+      border: 1px dashed var(--pacific-blue);
+    }
+    button {
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+    button:hover {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .nav-scrolled {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .nav-btn:hover {
+      box-shadow: none;
+    }
+
+    .category-container {
+      overflow: visible;
+    }
+
+
+    .food-card {
+      transition: transform 0.2s ease;
+    }
+
+    .food-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body class="bg-[var(--sand-dune)] text-gray-900">
+
+
+  <nav id="navbar" class="bg-[var(--jungle-green)] text-white px-6 py-4 flex items-center fixed top-0 left-0 z-50 transition-shadow w-full">
+    <div class="flex items-center gap-3">
+      <img src="images/Flavour. Logo.png" alt="Flavour logo" class="h-14 w-auto max-h-14 object-contain" />
+    </div>
+
+    <h1 class="absolute left-1/2 -translate-x-1/2 text-2xl font-bold">
+      Flavour.
+    </h1>
+
+    <div class="flex gap-6 items-center ml-auto">
+      <button class="nav-btn hover:text-[var(--orange)]">Menu</button>
+      <button class="nav-btn hover:text-[var(--orange)]">Orders</button>
+      <a href="login.html">
+        <button class="bg-white text-[var(--jungle-green)] px-4 py-2 rounded-lg font-semibold">
+          Login
+        </button>
+      </a>
+    </div>
+  </nav>
+  
+  <section class="px-0 py-16 w-full grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+    
+    <div class="md:col-span-2">
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+        Order food you <span class="text-[var(--jungle-green)]">actually want</span>
+      </h2>
+      <p class="text-lg text-gray-700 max-w-xl mb-6">
+        Fast delivery, fresh meals, zero stress.
+      </p>
+      <a href="login.html">
+        <button class="bg-[var(--strawberry-red)] text-white px-6 py-3 rounded-lg font-semibold">
+          Start Ordering
+        </button>
+      </a>
+    </div>
+</section>
+
+  
+  <section class="bg-white py-20 px-6 md:px-16">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-4">
+          About <span class="text-[var(--jungle-green)]">Flavour.</span>
+        </h2>
+        <div class="w-24 h-1 bg-[var(--orange)] mx-auto mb-6"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        
+        <div class="relative">
+          <div class="bg-[var(--jungle-green)] rounded-2xl p-8 text-white">
+            <div class="space-y-6">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-[var(--orange)] rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-2xl">🍕</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl mb-2">Fresh & Fast</h3>
+                  <p class="text-white/90">Quality meals delivered to your doorstep in minutes</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-[var(--strawberry-red)] rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-2xl">❤️</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl mb-2">Made with Love</h3>
+                  <p class="text-white/90">Every dish prepared by passionate local chefs</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-[var(--pacific-blue)] rounded-lg flex items-center justify-center flex-shrink-0">
+                  <span class="text-2xl">🌟</span>
+                </div>
+                <div>
+                  <h3 class="font-bold text-xl mb-2">Your Satisfaction</h3>
+                  <p class="text-white/90">We're not happy until you're delighted</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+       
+        <div class="space-y-6">
+          <p class="text-lg text-gray-700 leading-relaxed">
+            Welcome to <strong class="text-[var(--jungle-green)]">Flavour.</strong> – where great food meets effortless convenience. We started with a simple idea: ordering food should be as enjoyable as eating it.
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed">
+            We partner with the best local restaurants and kitchens to bring you a diverse menu of mouthwatering options. Whether you're craving comfort food, exploring new cuisines, or keeping it healthy, we've got something for every taste and mood.
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed">
+            Our mission is simple: deliver delicious food, fast and fresh, with a smile. Because life's too short for bad meals and long waits.
+          </p>
+          <div class="flex gap-4 pt-4">
+            <button class="bg-[var(--pacific-blue)] text-white px-6 py-3 rounded-lg font-semibold">
+              Learn More
+            </button>
+            <button class="border-2 border-[var(--pacific-blue)] text-[var(--pacific-blue)] px-6 py-3 rounded-lg font-semibold">
+              Contact Us
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+        <div class="text-center p-6 bg-[var(--sand-dune)] rounded-xl">
+          <div class="text-4xl font-extrabold text-[var(--jungle-green)] mb-2">500+</div>
+          <div class="text-gray-700 font-medium">Restaurant Partners</div>
+        </div>
+        <div class="text-center p-6 bg-[var(--sand-dune)] rounded-xl">
+          <div class="text-4xl font-extrabold text-[var(--strawberry-red)] mb-2">50K+</div>
+          <div class="text-gray-700 font-medium">Happy Customers</div>
+        </div>
+        <div class="text-center p-6 bg-[var(--sand-dune)] rounded-xl">
+          <div class="text-4xl font-extrabold text-[var(--orange)] mb-2">30min</div>
+          <div class="text-gray-700 font-medium">Average Delivery</div>
+        </div>
+        <div class="text-center p-6 bg-[var(--sand-dune)] rounded-xl">
+          <div class="text-4xl font-extrabold text-[var(--pacific-blue)] mb-2">4.8★</div>
+          <div class="text-gray-700 font-medium">Customer Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="bg-[var(--jungle-green)] text-white py-8 px-6 md:px-16">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="text-lg mb-2">© 2025 Flavour. All rights reserved.</p>
+      <p class="text-white/80">Bringing delicious food to your door, one order at a time.</p>
+    </div>
+  </footer>
