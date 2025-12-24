@@ -33,6 +33,7 @@
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
+ 
   <nav class="bg-[var(--jungle-green)] text-white px-6 py-4 rounded-2xl mb-8 flex items-center justify-between">
     <div class="flex items-center gap-3">
       <h1 class="text-2xl font-bold">Flavour.</h1>
@@ -44,25 +45,25 @@
 
   <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
     
+   
     <div class="lg:col-span-2">
       <div class="bg-white rounded-2xl p-6 cart-card">
         <h2 class="text-2xl font-bold mb-6" style="color: var(--jungle-green);">Your Cart</h2>
         <div id="cartItems" class="space-y-4">
-
+      
         </div>
         <div id="emptyCart" class="text-center py-12 hidden">
           <p class="text-gray-500 text-lg mb-4">Your cart is empty</p>
-          <a href="menu.html" class="inline-block bg-[var(--jungle-green)] text-white px-6 py-3 rounded-lg font-semibold">
+          <a href="Buy.Html" class="inline-block bg-[var(--jungle-green)] text-white px-6 py-3 rounded-lg font-semibold">
             Browse Menu
           </a>
         </div>
       </div>
     </div>
 
-
     <div class="space-y-6">
       
-  
+      
       <div class="bg-white rounded-2xl p-6 cart-card">
         <h3 class="text-xl font-bold mb-4" style="color: var(--orange);">Apply Coupon</h3>
         <form id="couponForm" class="space-y-3">
@@ -81,11 +82,11 @@
           </button>
         </form>
         <div id="appliedCoupons" class="mt-4 space-y-2">
-        
+          
         </div>
       </div>
 
-
+      
       <div class="bg-white rounded-2xl p-6 cart-card">
         <h3 class="text-xl font-bold mb-4" style="color: var(--jungle-green);">Order Summary</h3>
         <div class="space-y-3 text-gray-700">
@@ -126,7 +127,7 @@
   </div>
 
   <script>
-   
+    
     const productsDB = [
       {
         "itemId": "001",
@@ -165,15 +166,15 @@
       },
       {
         "itemId": "004",
-        "name": "Orange Juice",
-        "category": "Drink",
-        "price": 1500,
-        "availableQty": 200,
+        "name": "Chicken Burger",
+        "category": "Burger",
+        "price": 2550,
+        "availableQty": 80,
         "vat": 5,
         "discount": 0,
-        "couponCode": "OJSIMPSON",
+        "couponCode": "CHICKEN5",
         "couponDiscount": 5,
-        "notes": "FRESHLY SQUEEZED"
+        "notes": "No mayo"
       },
       {
         "itemId": "005",
@@ -186,7 +187,7 @@
         "couponCode": "CAKE10",
         "couponDiscount": 10
       },
-      
+     
       {
         "itemId": "006",
         "name": "Pepperoni Pizza",
@@ -202,17 +203,90 @@
       {
         "itemId": "007",
         "name": "Caesar Salad",
-        "category": "Healthy",
+        "category": "Salad",
         "price": 2800,
         "availableQty": 40,
         "vat": 5,
         "discount": 0,
         "couponCode": "SALAD15",
-        "couponDiscount": 15
+        "couponDiscount": 15,
+        "notes": "Crisp lettuce, parmesan, croutons"
+      },
+      {
+        "itemId": "008",
+        "name": "Fresh Orange Juice",
+        "category": "Drinks",
+        "price": 1500,
+        "availableQty": 150,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "JUICE5",
+        "couponDiscount": 5,
+        "notes": "100% Natural , No added sugar"
+      },
+      {
+        "itemId": "009",
+        "name": "Spring Rolls",
+        "category": "Snacks",
+        "price": 1800,
+        "availableQty": 100,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "SNACK10",
+        "couponDiscount": 10,
+        "notes": "Crispy golden rolls with dipping sauce"
+      },
+      {
+        "itemId": "010",
+        "name": "Grilled Chicken",
+        "category": "Healthy",
+        "price": 4200,
+        "availableQty": 60,
+        "vat": 5,
+        "discount": 5,
+        "couponCode": "CHICKEN10",
+        "couponDiscount": 10,
+        "notes": "Grilled chicken breast with herbs"
+      },
+      {
+        "itemId": "011",
+        "name": "Smoothie Bowl",
+        "category": "Healthy",
+        "price": 3200,
+        "availableQty": 45,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "BOWL15",
+        "couponDiscount": 15,
+        "notes": "Mixed berries, granola, honey drizzle"
+      },
+      {
+        "itemId": "012",
+        "name": "Iced Coffee",
+        "category": "Drinks",
+        "price": 1800,
+        "availableQty": 200,
+        "vat": 5,
+        "discount": 0,
+        "couponCode": "COFFEE5",
+        "couponDiscount": 5,
+        "notes": "Cold brew with milk and ice"
+      },
+      {
+        "itemId": "013",
+        "name": "Pizza Combo",
+        "category": "Deals",
+        "price": 4000,
+        "availableQty": 30,
+        "vat": 5,
+        "discount": 10,
+        "couponCode": "COMBO20",
+        "couponDiscount": 20,
+        "notes": "Large pizza + 2 drinks"
       }
     ];
 
-    
+  
     const generalCoupons = {
       "SAVE10": 10,
       "WELCOME20": 20,
@@ -398,7 +472,7 @@
       const container = document.getElementById('appliedCoupons');
       container.innerHTML = '';
 
-      
+      // Show general coupon
       if (appliedGeneralCoupon) {
         const div = document.createElement('div');
         div.className = 'flex items-center justify-between bg-green-50 border-2 border-green-300 rounded-lg px-3 py-2';
@@ -412,7 +486,6 @@
         container.appendChild(div);
       }
 
-      
       Object.entries(appliedItemCoupons).forEach(([itemId, couponCode]) => {
         const product = productsDB.find(p => p.itemId === itemId);
         if (product) {
@@ -446,7 +519,7 @@
       e.preventDefault();
       const code = document.getElementById('couponInput').value.trim().toUpperCase();
       
-      
+      // Check if it's a general coupon
       if (generalCoupons[code]) {
         appliedGeneralCoupon = code;
         alert(`General coupon "${code}" applied! ${generalCoupons[code]}% off your order.`);
@@ -456,7 +529,7 @@
         return;
       }
 
-      // Check if it's an item-specific coupon
+     
       const product = productsDB.find(p => p.couponCode === code);
       if (product) {
         const cartItem = cartItems.find(item => item.name === product.name);
@@ -494,7 +567,7 @@
       localStorage.setItem('cart', JSON.stringify(cartItems));
     }
 
-  
+   
     renderCart();
     renderAppliedCoupons();
   </script>
