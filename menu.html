@@ -97,7 +97,7 @@
     <div class="flex gap-6 items-center ml-auto">
       <button class="nav-btn hover:text-[var(--orange)]">Home</button>
       <button class="nav-btn hover:text-[var(--orange)]">Orders</button>
-      <button class="bg-white text-[var(--jungle-green)] px-4 py-2 rounded-lg font-semibold">
+      <button id="loginBtn" class="bg-white text-[var(--jungle-green)] px-4 py-2 rounded-lg font-semibold">
         Login
       </button>
     </div>
@@ -295,6 +295,33 @@
     <span id="cartCount">Cart (0)</span>
   </a>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCrtHNewzF3FQwMuDDta_TycgFbpgytscM",
+      authDomain: "flavour-app.firebaseapp.com",
+      projectId: "flavour-app",
+      storageBucket: "flavour-app.firebasestorage.app",
+      messagingSenderId: "689550413226",
+      appId: "1:689550413226:web:b1930dc2f35e1e7a656fd3",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      const loginBtn = document.getElementById("loginBtn");
+      if (!loginBtn) return;
+
+      if (user) {
+        loginBtn.style.display = "none";
+      } else {
+        loginBtn.style.display = "inline-block";
+      }
+    });
+  </script>
   <script>
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
